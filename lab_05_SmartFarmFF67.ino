@@ -94,7 +94,17 @@ Serial.println("อุณหภูมิ");
   Serial.println(F(" F"));
 
 
- Serial.println(F("---------------------------------------------------"));   
+ Serial.println(F("---------------------------------------------------")); 
+
+
+//up to blynk
+
+//อุณหภูมิ
+Blynk.virtualWrite(V21, t); 
+
+//ความชื้น
+Blynk.virtualWrite(V22, h); 
+
 }
 
 // เปิด ปิด ปั๊ม 1
