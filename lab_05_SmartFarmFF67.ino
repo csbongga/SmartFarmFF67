@@ -6,6 +6,8 @@
 #define pump_06 5
 #define pump_07 4 
 #define pump_08 2 
+#define soil_moisture 34
+
 
 #define BLYNK_PRINT Serial
 
@@ -62,6 +64,8 @@ void setup()
 
   dht.begin();
 
+//ความชื้นในดิน
+  pinMode(soil_moisture, INPUT);
 }
 
 void loop()
@@ -93,6 +97,12 @@ Serial.println("อุณหภูมิ");
   Serial.print(hif);
   Serial.println(F(" F"));
 
+//ความชื้นในดิน
+  int soil = analogRead(soil_moisture);
+  soil = map(soil, 1, 4096, 100, 1);
+  Serial.print("Moisture Sensor Value:");
+
+  Serial.println(analogRead(soil_moisture));
 
  Serial.println(F("---------------------------------------------------")); 
 
@@ -102,8 +112,11 @@ Serial.println("อุณหภูมิ");
 //อุณหภูมิ
 Blynk.virtualWrite(V21, t); 
 
-//ความชื้น
+//ความชื้นในอากาศ
 Blynk.virtualWrite(V22, h); 
+
+//ความชื้นในดิน
+Blynk.virtualWrite(V23, soil);
 
 }
 
