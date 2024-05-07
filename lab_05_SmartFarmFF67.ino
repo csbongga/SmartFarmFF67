@@ -24,6 +24,14 @@
 char ssid[] = "4G-MIFI-46C";
 char pass[] = "1234567890";
 
+
+//อุณหภูมิ
+#include "DHT.h"
+#define DHTPIN 15
+#define DHTTYPE DHT22
+DHT dht(DHTPIN, DHTTYPE);
+
+
 void setup()
 {
   // Debug console
@@ -48,11 +56,45 @@ void setup()
   digitalWrite(pump_06, LOW);
   digitalWrite(pump_07, LOW);
   digitalWrite(pump_08, LOW);
+
+//อุณหภูมิ
+  Serial.println(F("DHTxx test!"));
+
+  dht.begin();
+
 }
 
 void loop()
 {
   Blynk.run();
+
+Serial.println(F("---------------------------------------------------"));
+//---------------------อุณหภูมิ------------------------------
+Serial.println("อุณหภูมิ");
+  float h = dht.readHumidity();
+  float t = dht.readTemperature();
+  float f = dht.readTemperature(true);
+  if (isnan(h) || isnan(t) || isnan(f)) {
+    Serial.println(F("Failed to read from DHT sensor!"));
+    return;
+  }
+  float hif = dht.computeHeatIndex(f, h);
+  float hic = dht.computeHeatIndex(t, h, false);
+
+  Serial.print(F("Humidity: "));
+  Serial.print(h);
+  Serial.print(F("%  Temperature: "));
+  Serial.print(t);
+  Serial.print(F(" C "));
+  Serial.print(f);
+  Serial.print(F(" F  Heat index: "));
+  Serial.print(hic);
+  Serial.print(F(" C "));
+  Serial.print(hif);
+  Serial.println(F(" F"));
+
+
+ Serial.println(F("---------------------------------------------------"));   
 }
 
 // เปิด ปิด ปั๊ม 1
